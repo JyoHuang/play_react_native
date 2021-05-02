@@ -8,11 +8,13 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.13.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/drawer": "^5.12.5",
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/stack": "^5.14.4",
     "expo": "~41.0.1",
+    "expo-camera": "~11.0.2",
     "expo-status-bar": "~1.0.4",
     "react": "16.13.1",
     "react-dom": "16.13.1",
@@ -23,7 +25,7 @@
     "react-native-screens": "~3.0.0",
     "react-native-svg": "12.1.0",
     "react-native-web": "~0.13.12",
-    "expo-camera": "~11.0.2"
+    "unimodules-permissions-interface": "^6.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"

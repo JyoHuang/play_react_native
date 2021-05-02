@@ -6,7 +6,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 
 import TextMessageScreen from "./TextMessageScreen";
-import ImageMessageScreen from "./ImageMessageScreen";
+import ImageMessageSwitchScreen from "./ImageMessageSwitchScreen";
 
 const Drawer = createDrawerNavigator();
 
@@ -20,8 +20,8 @@ export default function MainScreen() {
       >
         <Drawer.Screen name="TextMessageScreen" component={TextMessageScreen} />
         <Drawer.Screen
-          name="ImageMessageScreen"
-          component={ImageMessageScreen}
+          name="ImageMessageSwitchScreen"
+          component={ImageMessageSwitchScreen}
         />
       </Drawer.Navigator>
     </NavigationContainer>
