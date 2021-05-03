@@ -120,7 +120,7 @@ export default function ImageMessageScreen(props) {
       .then((response) => response.json())
       .then((responseData) => {
         console.log("responseData=" + JSON.stringify(responseData));
-        getImageMessage
+        getImageMessage()
       })
       .catch((error) => {
         console.log("error=", error);
@@ -139,7 +139,7 @@ export default function ImageMessageScreen(props) {
             backgroundColor: "red",
           }}
           source={{
-            uri: "data:image/png;base64," + item.image_local,
+            uri: "https://createdigit.com/playlaravel/public/storage/files/" + item.image_local,
           }}
         />
         <TouchableOpacity
