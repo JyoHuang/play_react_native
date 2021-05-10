@@ -7,6 +7,8 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import TextMessageScreen from "./TextMessageScreen";
 import ImageMessageSwitchScreen from "./ImageMessageSwitchScreen";
+import WebviewScreen from "./WebviewScreen";
+import GoogleMapScreen from "./GoogleMapScreen";
 
 const Drawer = createDrawerNavigator();
 
@@ -23,6 +25,8 @@ export default function MainScreen() {
           name="ImageMessageSwitchScreen"
           component={ImageMessageSwitchScreen}
         />
+        <Drawer.Screen name="WebviewScreen" component={WebviewScreen} />
+        <Drawer.Screen name="GoogleMapScreen" component={GoogleMapScreen} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

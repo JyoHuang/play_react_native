@@ -17,13 +17,18 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.empirejdesign.govegan",
+      "config" : {
+          "googleMapsApiKey" : "AIzaSyB3Uul9r4iVsBbEm_1Obfz-3GhOCRxqOns"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.empirejdesign.govegan"
     },
     "web": {
       "favicon": "./assets/favicon.png"

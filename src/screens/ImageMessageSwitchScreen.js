@@ -3,7 +3,8 @@ import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 import ImageMessageScreen from "./ImageMessageScreen";
-import CameraScreen from "./CameraScreen";
+import TakePicture from "./TakePicture";
+import ImagePickerExample from "./ImagePickerExample";
 
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -20,8 +21,13 @@ export default function ImageMessageSwitchScreen() {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="CameraScreen"
-        component={CameraScreen}
+        name="ImagePickerExample"
+        component={ImagePickerExample}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="TakePicture"
+        component={TakePicture}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

@@ -1,37 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import Constants from "expo-constants";
 import { Camera } from "expo-camera";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StackActions } from "@react-navigation/native";
 
-export default function CameraScreen() {
+export default function TakePicture(props) {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
-
-  const takePicture = async () => {
-    if (this.camera) {
-      const options = { quality: 0.5, base64: true }; //1是最好的 0是最低的
-      const data = await this.camera.takePictureAsync(options);
-      console.log(data);
-
-      storeData(data.base64);
-
-
-      console.log(getData());
-      
-
-    }
-  };
-
-  const storeData = async (value) => {
-    try {
-      await AsyncStorage.setItem('storage_Key123', value)
-      console.log("存好了");
-    } catch (e) {
-      // saving error
-    }
-  }
-  
 
   useEffect(() => {
     (async () => {
@@ -46,13 +20,29 @@ export default function CameraScreen() {
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
+
+  const takePicture = () => {
+    if (this.camera) {
+      this.camera.takePictureAsync({
+        onPictureSaved: onPictureSaved,
+        quality: 0.5,
+      });
+    }
+  };
+
+  const onPictureSaved = (photo) => {
+    console.log(photo);
+    props.route.params.functionsetselectedImageUri(photo.uri);
+    const popAction = StackActions.pop(1);
+    props.navigation.dispatch(popAction);
+  };
   return (
     <View style={styles.container}>
       <Camera
         style={styles.camera}
         type={type}
-        ref={(r) => {
-          camera = r;
+        ref={(ref) => {
+          this.camera = ref;
         }}
       >
         <View style={styles.buttonContainer}>
@@ -68,13 +58,8 @@ export default function CameraScreen() {
           >
             <Text style={styles.text}> Flip </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              takePicture();
-            }}
-          >
-            <Text style={styles.text}> 拍照 </Text>
+          <TouchableOpacity style={styles.button} onPress={takePicture}>
+            <Text style={styles.text}>拍照</Text>
           </TouchableOpacity>
         </View>
       </Camera>

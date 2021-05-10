@@ -10,13 +10,23 @@ import {
   FlatList,
   Modal,
   TouchableHighlight,
+  ActivityIndicator,
 } from "react-native";
 import Constants from "expo-constants";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import exampleImage from "../../assets/favicon.png"
 
 export default function ImageMessageScreen(props) {
   const [dataSource, setDataSource] = useState([]);
   const [myState, setMyState] = useState(true);
+
+
+  const exampleImageUri = Image.resolveAssetSource(exampleImage).uri
+
+  const [selectedImageUri, setselectedImageUri] = useState(
+    exampleImageUri
+  );
 
   const clickOpacity = function () {
     console.log("出現menu");
@@ -29,9 +39,10 @@ export default function ImageMessageScreen(props) {
   };
 
   const getImageMessage = function () {
+    setloadingVisible(true);
     const REQUEST_URL =
       "https://playlaravel.createdigit.com/api/message/getimagemessage";
-      
+
     fetch(REQUEST_URL)
       .then((response) => response.json())
       .then((responseData) => {
@@ -39,9 +50,11 @@ export default function ImageMessageScreen(props) {
         setDataSource(responseData.messages);
         setMyState(!myState);
         console.log("myState=" + myState);
+        setloadingVisible(false);
       })
       .catch((error) => {
         console.log("error=", error);
+        setloadingVisible(false);
       });
   };
 
@@ -73,59 +86,58 @@ export default function ImageMessageScreen(props) {
     setModalVisible(true);
   };
 
-  const [storage_Key123, setstorage_Key123] = useState('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg==');
-  //這邊可以加上useEffect去拿值!!
-  
-  useEffect(() => {
-    // componentDidMount is here!
-    //setstorage_Key123("data:image/png;base64," + getTempImageData())
-    getTempImageData();
-
-    return () => {
-      // componentWillUnmount is here!
-      
-    };
-    
-  }, []);
-  
   const getTempImageData = async () => {
     try {
-      const value = await AsyncStorage.getItem('storage_Key123')
-      if(value !== null) {
-        console.log("他的值是"+value); 
+      const value = await AsyncStorage.getItem("storage_Key123");
+      if (value !== null) {
+        console.log("他的值是" + value);
         //因為它是非同步的 所以會回傳一個物件 因此這邊直接拿到值之後直接設定就好
         setstorage_Key123(value);
       }
-    } catch(e) {
+    } catch (e) {
       // error reading value
-      console.log("error="+e); //失敗囉
+      console.log("error=" + e); //失敗囉
     }
-  }
+  };
 
   const clickUploadImageMessage = function () {
-    
+    let localUri = selectedImageUri;
+    let filename = localUri.split("/").pop();
+
+    // Infer the type of the image
+    let match = /\.(\w+)$/.exec(filename);
+    let type = match ? `image/${match[1]}` : `image`;
+
+    console.log("localUri="+localUri)
+
+    // Upload the image using the fetch and FormData APIs
+    let formData = new FormData();
+    // Assume "photo" is the name of the form field the server expects
+    formData.append("file-to-upload", { uri: localUri, name: filename, type });
+
+    setloadingVisible(true);
     const REQUEST_URL =
-      "https://playlaravel.createdigit.com/api/message/addimagebase64message";
+      "https://playlaravel.createdigit.com/api/message/addimagemessage";
 
     fetch(REQUEST_URL, {
       method: "POST",
+      body: formData,
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        "content-type": "multipart/form-data",
       },
-      body: JSON.stringify({
-        image_local: storage_Key123,
-      }),
     })
       .then((response) => response.json())
       .then((responseData) => {
         console.log("responseData=" + JSON.stringify(responseData));
-        getImageMessage()
+        getImageMessage();
       })
       .catch((error) => {
         console.log("error=", error);
+        setloadingVisible(false);
       });
   };
+
+  const [loadingVisible, setloadingVisible] = useState(false);
 
   const renderImageMessageData = function (item) {
     return (
@@ -139,7 +151,9 @@ export default function ImageMessageScreen(props) {
             backgroundColor: "red",
           }}
           source={{
-            uri: "https://createdigit.com/playlaravel/public/storage/files/" + item.image_local,
+            uri:
+              "https://createdigit.com/playlaravel/public/storage/files/" +
+              item.image_local,
           }}
         />
         <TouchableOpacity
@@ -190,7 +204,7 @@ export default function ImageMessageScreen(props) {
             backgroundColor: "red",
           }}
           source={{
-            uri: 'data:image/png;base64,'+storage_Key123,
+            uri: selectedImageUri,
           }}
         />
         <TouchableOpacity
@@ -223,14 +237,41 @@ export default function ImageMessageScreen(props) {
                 style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
                 onPress={() => {
                   setModalVisible(false);
-                  props.navigation.push("CameraScreen");
+                  props.navigation.push("TakePicture", {
+                    functionsetselectedImageUri: (arg) =>
+                      setselectedImageUri(arg),
+                  });
+                  //props.navigation.push("TakePicture");
                 }}
               >
                 <Text style={styles.textStyle}>拍照</Text>
               </TouchableHighlight>
+              <TouchableHighlight
+                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                onPress={() => {
+                  setModalVisible(false);
+                  props.navigation.push("ImagePickerExample",{
+                    functionsetselectedImageUri: (arg) =>
+                      setselectedImageUri(arg),
+                  });
+                }}
+              >
+                <Text style={styles.textStyle}>選擇照片</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                onPress={() => {
+                  setModalVisible(false);
+                }}
+              >
+                <Text style={styles.textStyle}>取消</Text>
+              </TouchableHighlight>
             </View>
           </View>
         </Modal>
+      </View>
+      <View style={styles.containerZ3}>
+        <ActivityIndicator size="large" animating={loadingVisible} />
       </View>
     </SafeAreaView>
   );
@@ -278,6 +319,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     zIndex: 1,
     position: "absolute",
+    height: "100%",
+  },
+  containerZ3: {
+    flex: 1,
+    alignItems: "center",
+    zIndex: 3,
+    justifyContent: "center",
     height: "100%",
   },
   centeredView: {
