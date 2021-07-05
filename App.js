@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 import BeginScreen from "./src/screens/BeginScreen";
 import MainScreen from "./src/screens/MainScreen";
+import MainDrawerScreen from './src/screens/MainDrawerScreen';
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";

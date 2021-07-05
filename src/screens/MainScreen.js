@@ -17,8 +17,7 @@ export default function MainScreen() {
     <NavigationContainer
     independent={true}>
       <Drawer.Navigator initialRouteName="TextMessageScreen"
-      drawerPosition='right'
-      edgeWidth={100}
+     
       >
         <Drawer.Screen name="TextMessageScreen" component={TextMessageScreen} />
         <Drawer.Screen

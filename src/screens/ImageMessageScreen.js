@@ -37,7 +37,7 @@ export default function ImageMessageScreen(props) {
     console.log("取得圖片");
     getImageMessage();
   };
-
+  //主要取得圖片相關內容
   const getImageMessage = function () {
     setloadingVisible(true);
     const REQUEST_URL =
@@ -82,9 +82,15 @@ export default function ImageMessageScreen(props) {
   };
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [count, setCount] = useState(0);
+  const onPress = () => setCount(prevCount => prevCount + 1);
   const clickAddImageMessage = function () {
+    onPress();
+    console.log('按了這個按鈕count='+count);
     setModalVisible(true);
   };
+
+
 
   const getTempImageData = async () => {
     try {
@@ -191,10 +197,13 @@ export default function ImageMessageScreen(props) {
           </TouchableOpacity>
         </View>
         <TouchableOpacity
+        delayPressIn={0}
           style={styles.styleAddTextMessageButton}
           onPress={() => clickAddImageMessage()}
         >
-          <Text style={styles.styleAddTextMessageText}>選取照片</Text>
+          <View style={styles.button}>
+            <Text style={styles.buttonText}>選取照片</Text>
+          </View>
         </TouchableOpacity>
         <Image
           style={{
@@ -377,4 +386,15 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingBottom: 20,
   },
+
+
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#2196F3'
+  },
+  buttonText: {
+    textAlign: 'center',
+    padding: 20,
+    color: 'white'
+  }
 });

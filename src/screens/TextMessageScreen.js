@@ -30,6 +30,7 @@ export default function TextMessageScreen(props) {
     console.log("clickGetTextMessage");
     getTextMessage();
   };
+  //這個函數主要是call api來拿取文字相關的內容
   const getTextMessage = function () {
     const REQUEST_URL =
       "https://playlaravel.createdigit.com/api/message/gettextmessage";
@@ -37,6 +38,7 @@ export default function TextMessageScreen(props) {
       .then((response) => response.json())
       .then((responseData) => {
         console.log("responseData=" + JSON.stringify(responseData));
+        //主要把取得的內如放到dataSource這個變數，然後藉此更新UI上面的列表(Flatlist)
         setDataSource(responseData.messages);
         setMyState(!myState);
         console.log("myState=" + myState);
@@ -73,6 +75,7 @@ export default function TextMessageScreen(props) {
       </View>
     );
   };
+  //主要來新增一筆文字內容
   const clickAddTextMessage = function () {
     
     const REQUEST_URL =
@@ -101,7 +104,7 @@ export default function TextMessageScreen(props) {
   const [modalVisible, setModalVisible] = useState(false);
 
   const [messageEditInput , setMessageEditInput] = useState('');
-
+  //主要來更新一筆文在內容
   const updateTextImageCallAPI = function(){
     const REQUEST_URL =
       "https://playlaravel.createdigit.com/api/message/updatetextmessage";
@@ -126,7 +129,7 @@ export default function TextMessageScreen(props) {
         console.log("error=", error);
       });
   }
-
+  //主要來刪除一筆文字內容
   const clickDeleteTextMessage = function(idToDelete){
     const REQUEST_URL =
       "https://playlaravel.createdigit.com/api/message/deletetextmessage";
