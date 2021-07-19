@@ -7,6 +7,7 @@ import MainScreen from "./src/screens/MainScreen";
 import MainDrawerScreen from "./src/screens/MainDrawerScreen";
 import AsyncStorageScreen from "./src/screens/AsyncStorageScreen";
 import RestScreen from "./src/screens/RestScreen";
+import DetectFoodsScreen from "./src/screens/DetectFoodsScreen";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -17,7 +18,12 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-      <Stack.Screen
+        <Stack.Screen
+          name="DetectFoodsScreen"
+          component={DetectFoodsScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
           name="RestScreen"
           component={RestScreen}
           options={{ headerShown: false }}
